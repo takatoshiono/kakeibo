@@ -2,6 +2,7 @@ package mf
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -14,21 +15,34 @@ import (
 
 var driveCmd = &cobra.Command{
 	Use:   "drive <command>",
-	Short: "Upload to Google Drive",
+	Short: "Upload and download files to Google Drive",
 	Long:  `Work with Google Drive`,
 }
 
 var driveUploadCmd = &cobra.Command{
 	Use:   "upload",
-	Short: "upload a file to a folder in Google Drive",
+	Short: "Upload a file to a folder in Google Drive",
 	Long: `This command upload a file to a folder in Google Drive. For example:
 
-	mf upload --file FILE_PATH --parent GOOGLE_DRIVE_FOLDER_ID
+	mf drive upload --file FILE_PATH --parent GOOGLE_DRIVE_FOLDER_ID
 	
 This command uses Google Application Default Credentials for authentication.
 So please to set GOOGLE_APPLICATION_CREDENTIALS environment variable.
 	`,
 	RunE: driveUpload,
+}
+
+var driveDownloadCmd = &cobra.Command{
+	Use:   "download",
+	Short: "Download a file from a folder in Google Drive",
+	Long: `This command download a file from a folder in Google Drive. For example:
+
+	mf drive download --file FILE_PATH --parent GOOGLE_DRIVE_FOLDER_ID
+	
+This command uses Google Application Default Credentials for authentication.
+So please to set GOOGLE_APPLICATION_CREDENTIALS environment variable.
+	`,
+	RunE: driveDownload,
 }
 
 func driveUpload(cmd *cobra.Command, args []string) error {
@@ -62,10 +76,16 @@ func driveUpload(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
+func driveDownload(cmd *cobra.Command, args []string) error {
+	return errors.New("not implemented")
+}
+
 func init() {
 	driveCmd.AddCommand(driveUploadCmd)
 	driveUploadCmd.Flags().StringP("file", "f", "", "upload file path")
 	driveUploadCmd.Flags().StringP("parent", "p", "", "parent folder id")
 	driveUploadCmd.MarkFlagRequired("file")
 	driveUploadCmd.MarkFlagRequired("parent")
+
+	driveCmd.AddCommand(driveDownloadCmd)
 }

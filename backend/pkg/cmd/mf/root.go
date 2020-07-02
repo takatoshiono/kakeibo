@@ -39,6 +39,8 @@ func init() {
 	RootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
 	RootCmd.AddCommand(driveCmd)
+	RootCmd.AddCommand(dbCmd)
+	RootCmd.AddCommand(historyCmd)
 }
 
 // initConfig reads in config file and ENV variables if set.
