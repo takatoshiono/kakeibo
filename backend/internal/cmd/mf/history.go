@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/takatoshiono/kakeibo/backend/pkg/moneyforward"
+	"github.com/takatoshiono/kakeibo/backend/internal/moneyforward"
 )
 
 var historyCmd = &cobra.Command{

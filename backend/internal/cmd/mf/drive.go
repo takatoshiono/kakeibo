@@ -10,7 +10,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/takatoshiono/kakeibo/backend/pkg/googledrive"
+	"github.com/takatoshiono/kakeibo/backend/internal/googledrive"
 )
 
 var driveCmd = &cobra.Command{

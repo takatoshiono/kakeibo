@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/takatoshiono/kakeibo/backend/pkg/cmd/mf"
+	"github.com/takatoshiono/kakeibo/backend/internal/cmd/mf"
 )
 
 func main() {
