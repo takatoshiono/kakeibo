@@ -41,8 +41,6 @@ func csvDownload(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to get filename: %w", err)
 	}
 
-	// TODO: validate input arguments
-
 	mf := moneyforward.New(email, password)
 	ctx := context.Background()
 	if err := mf.Login(ctx); err != nil {
@@ -67,8 +65,9 @@ func csvDownload(cmd *cobra.Command, args []string) error {
 }
 
 func init() {
+	now := time.Now()
 	csvCmd.AddCommand(csvDownloadCmd)
-	csvDownloadCmd.Flags().IntP("year", "y", 0, "year. format is YYYY")
-	csvDownloadCmd.Flags().IntP("month", "m", 0, "month. format is 1 to 12")
-	csvDownloadCmd.Flags().StringP("filename", "f", "out.csv", "output filename. default: out.csv")
+	csvDownloadCmd.Flags().IntP("year", "y", now.Year(), "year. format is YYYY")
+	csvDownloadCmd.Flags().IntP("month", "m", int(now.Month()), "month. format is 1 to 12")
+	csvDownloadCmd.Flags().StringP("filename", "f", "out.csv", "output filename")
 }
