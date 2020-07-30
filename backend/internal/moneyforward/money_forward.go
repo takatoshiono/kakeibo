@@ -115,7 +115,6 @@ func (m *MoneyForward) DownloadCSV(ctx context.Context, year int, month time.Mon
 	v.Set("year", fmt.Sprintf("%d", year))
 
 	url := fmt.Sprintf("%s?%s", downloadURL, v.Encode())
-	fmt.Println(url)
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, fmt.Errorf("failed to new request: %w", err)
