@@ -11,20 +11,20 @@ import (
 	"github.com/takatoshiono/kakeibo/backend/internal/moneyforward"
 )
 
-var historyCmd = &cobra.Command{
-	Use:   "history <command>",
-	Short: "Download history files from Money Forward ME",
-	Long:  `Work with history of Money Forward ME`,
+var csvCmd = &cobra.Command{
+	Use:   "csv <command>",
+	Short: "Download csv files from Money Forward ME",
+	Long:  `Work with csv of Money Forward ME`,
 }
 
-var historyDownloadCmd = &cobra.Command{
+var csvDownloadCmd = &cobra.Command{
 	Use:   "download",
-	Short: "Download history files from Money Forward ME",
-	Long:  `This command download files from Money Forward ME`,
-	RunE:  historyDownload,
+	Short: "Download csv files from Money Forward ME",
+	Long:  `This command download files frOm Money Forward ME`,
+	RunE:  csvDownload,
 }
 
-func historyDownload(cmd *cobra.Command, args []string) error {
+func csvDownload(cmd *cobra.Command, args []string) error {
 	email := os.Getenv("MF_EMAIL")
 	password := os.Getenv("MF_PASSWORD")
 
@@ -67,8 +67,8 @@ func historyDownload(cmd *cobra.Command, args []string) error {
 }
 
 func init() {
-	historyCmd.AddCommand(historyDownloadCmd)
-	historyDownloadCmd.Flags().IntP("year", "y", 0, "year. format is YYYY")
-	historyDownloadCmd.Flags().IntP("month", "m", 0, "month. format is 1 to 12")
-	historyDownloadCmd.Flags().StringP("filename", "f", "out.csv", "output filename. default: out.csv")
+	csvCmd.AddCommand(csvDownloadCmd)
+	csvDownloadCmd.Flags().IntP("year", "y", 0, "year. format is YYYY")
+	csvDownloadCmd.Flags().IntP("month", "m", 0, "month. format is 1 to 12")
+	csvDownloadCmd.Flags().StringP("filename", "f", "out.csv", "output filename. default: out.csv")
 }

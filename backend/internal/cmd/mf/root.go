@@ -40,7 +40,7 @@ func init() {
 
 	RootCmd.AddCommand(driveCmd)
 	RootCmd.AddCommand(dbCmd)
-	RootCmd.AddCommand(historyCmd)
+	RootCmd.AddCommand(csvCmd)
 }
 
 // initConfig reads in config file and ENV variables if set.
