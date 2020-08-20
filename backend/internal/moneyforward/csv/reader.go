@@ -13,6 +13,7 @@ var headerLabels = [10]string{
 	"計算対象", "日付", "内容", "金額（円）", "保有金融機関", "大項目", "中項目", "メモ", "振替", "ID",
 }
 
+// Reader reads records from money forward csv file.
 type Reader struct {
 	reader *csv.Reader
 
@@ -23,6 +24,7 @@ type Reader struct {
 	isHeaderIgnored bool
 }
 
+// NewReader returns a new reader that reads from r.
 func NewReader(r io.Reader) *Reader {
 	rr := transform.NewReader(r, japanese.ShiftJIS.NewDecoder())
 	return &Reader{
@@ -31,8 +33,9 @@ func NewReader(r io.Reader) *Reader {
 	}
 }
 
-func (r *Reader) Read() (record []string, err error) {
-	fields, err := r.reader.Read()
+// Read reads one record from r.
+func (r *Reader) Read() ([]string, error) {
+	record, err := r.reader.Read()
 	if err == io.EOF {
 		return nil, err
 	}
@@ -40,14 +43,30 @@ func (r *Reader) Read() (record []string, err error) {
 		return nil, fmt.Errorf("failed to read: %w", err)
 	}
 	if r.IgnoreHeader && !r.isHeaderIgnored {
-		if fields[0] == headerLabels[0] {
+		if r.isHeaderRecord(record) {
 			r.isHeaderIgnored = true
 			return r.Read()
 		}
 	}
-	return fields, nil
+	return record, nil
 }
 
-func (r *Reader) ReadAll() (records [][]string, err error) {
-	return r.reader.ReadAll()
+// ReadAll reads all the remaining records from r.
+func (r *Reader) ReadAll() ([][]string, error) {
+	records, err := r.reader.ReadAll()
+	if err != nil {
+		return nil, fmt.Errorf("failed to ReadAll: %w", err)
+	}
+
+	if r.IgnoreHeader && !r.isHeaderIgnored {
+		if r.isHeaderRecord(records[0]) {
+			r.isHeaderIgnored = true
+			return records[1:], nil
+		}
+	}
+	return records, nil
+}
+
+func (r *Reader) isHeaderRecord(record []string) bool {
+	return record[0] == headerLabels[0]
 }
