@@ -12,17 +12,18 @@ import (
 // ImportMoneyForwardRecords is a usecase for money forward records.
 type ImportMoneyForwardRecords struct {
 	reader      MoneyForwardCSVReader
+	transaction Transaction
 	masterRepo  MasterRepository
 	mfRepo      MoneyForwardRepository
-	transaction Transaction
 }
 
 // NewImportMoneyForwardRecords returns a new ImportMoneyForwardRecords usecase.
-func NewImportMoneyForwardRecords(reader MoneyForwardCSVReader, masterRepo MasterRepository, mfRepo MoneyForwardRepository) *ImportMoneyForwardRecords {
+func NewImportMoneyForwardRecords(reader MoneyForwardCSVReader, transaction Transaction, masterRepo MasterRepository, mfRepo MoneyForwardRepository) *ImportMoneyForwardRecords {
 	return &ImportMoneyForwardRecords{
-		reader:     reader,
-		masterRepo: masterRepo,
-		mfRepo:     mfRepo,
+		reader:      reader,
+		transaction: transaction,
+		masterRepo:  masterRepo,
+		mfRepo:      mfRepo,
 	}
 }
 

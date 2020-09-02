@@ -21,11 +21,11 @@ func NewMasterRepository(transaction *Transaction) *MasterRepository {
 // CreateOrFindSource creates or finds a source.
 func (repo *MasterRepository) CreateOrFindSource(ctx context.Context, name string) (*domain.Source, error) {
 	// TODO: implement
-	return nil, nil
+	return &domain.Source{}, nil
 }
 
 // CreateOrFindCategory creates or finds a category.
 func (repo *MasterRepository) CreateOrFindCategory(ctx context.Context, name string, level domain.CategoryLevel, parentID string) (*domain.Category, error) {
 	// TODO: implement
-	return nil, nil
+	return &domain.Category{}, nil
 }
