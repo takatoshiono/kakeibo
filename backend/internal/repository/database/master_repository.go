@@ -2,6 +2,11 @@ package database
 
 import (
 	"context"
+	"database/sql"
+	"fmt"
+	"time"
+
+	"github.com/google/uuid"
 
 	"github.com/takatoshiono/kakeibo/backend/internal/domain"
 )
@@ -20,8 +25,44 @@ func NewMasterRepository(transaction *Transaction) *MasterRepository {
 
 // FindOrCreateSource creates or finds a source.
 func (repo *MasterRepository) FindOrCreateSource(ctx context.Context, name string) (*domain.Source, error) {
-	// TODO: implement
-	return &domain.Source{}, nil
+	db := repo.transaction.getDB()
+
+	const findQuery = `
+SELECT id, name, display_order FROM sources WHERE name = ?`
+	findArgs := []interface{}{name}
+
+	s := &domain.Source{}
+	err := db.QueryRowContext(ctx, findQuery, findArgs...).Scan(&s.ID, &s.Name, &s.DisplayOrder)
+	switch {
+	case err == sql.ErrNoRows:
+		// pass through
+	case err != nil:
+		return nil, fmt.Errorf("failed to scan: %w", err)
+	default:
+		return s, nil
+	}
+
+	now := time.Now()
+	uuid, err := uuid.NewRandom()
+	if err != nil {
+		return nil, fmt.Errorf("failed to get a random uuid: %w", err)
+	}
+	displayOrder := 0
+
+	const insertQuery = `
+INSERT INTO sources(id, name, display_order, created_at, updated_at)
+VALUES(?, ?, ?, ?, ?)`
+	insertArgs := []interface{}{uuid.String(), name, displayOrder, now, now}
+
+	if _, err := db.ExecContext(ctx, insertQuery, insertArgs...); err != nil {
+		return nil, fmt.Errorf("failed to execute insert query: %w", err)
+	}
+
+	return &domain.Source{
+		ID:           uuid.String(),
+		Name:         name,
+		DisplayOrder: displayOrder,
+	}, nil
 }
 
 // FindOrCreateCategory createFindOrinds a category.

@@ -3,18 +3,21 @@ CREATE TABLE sources (
     id varchar(255) not null,
     name varchar(255) not null,
     display_order int not null,
+    created_at datetime not null,
+    updated_at datetime not null,
     primary key (id)
 );
 CREATE UNIQUE INDEX idx_name_on_sources on sources(name);
 
 -- 項目
--- TODO: 親のIDが必要では？
 CREATE TABLE categories (
     id varchar(255) not null,
     name varchar(255) not null,
     level int not null,
     display_order int not null,
     parent_id varchar(255),
+    created_at datetime not null,
+    updated_at datetime not null,
     primary key (id)
 );
 CREATE UNIQUE INDEX idx_name_level_on_categories on categories(name, level);

@@ -7,6 +7,7 @@ require (
 	github.com/chromedp/cdproto v0.0.0-20200709115526-d1f6fc58448b
 	github.com/chromedp/chromedp v0.5.4-0.20200702144136-a7a150670b16
 	github.com/gobwas/pool v0.2.1 // indirect
+	github.com/google/uuid v1.1.2
 	github.com/mattn/go-sqlite3 v1.14.1
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/spf13/cobra v1.0.0
