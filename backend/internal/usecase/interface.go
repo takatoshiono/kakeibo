@@ -34,8 +34,8 @@ type Transaction interface {
 
 // MasterRepository is a interface of MasterRepository.
 type MasterRepository interface {
-	CreateOrFindSource(ctx context.Context, name string) (*domain.Source, error)
-	CreateOrFindCategory(ctx context.Context, name string, level domain.CategoryLevel, parentID string) (*domain.Category, error)
+	FindOrCreateSource(ctx context.Context, name string) (*domain.Source, error)
+	FindOrCreateCategory(ctx context.Context, name string, level domain.CategoryLevel, parentID string) (*domain.Category, error)
 }
 
 // MoneyForwardRepository is a interface of MoneyForwardRepository.

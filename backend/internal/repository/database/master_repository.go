@@ -18,14 +18,14 @@ func NewMasterRepository(transaction *Transaction) *MasterRepository {
 	}
 }
 
-// CreateOrFindSource creates or finds a source.
-func (repo *MasterRepository) CreateOrFindSource(ctx context.Context, name string) (*domain.Source, error) {
+// FindOrCreateSource creates or finds a source.
+func (repo *MasterRepository) FindOrCreateSource(ctx context.Context, name string) (*domain.Source, error) {
 	// TODO: implement
 	return &domain.Source{}, nil
 }
 
-// CreateOrFindCategory creates or finds a category.
-func (repo *MasterRepository) CreateOrFindCategory(ctx context.Context, name string, level domain.CategoryLevel, parentID string) (*domain.Category, error) {
+// FindOrCreateCategory createFindOrinds a category.
+func (repo *MasterRepository) FindOrCreateCategory(ctx context.Context, name string, level domain.CategoryLevel, parentID string) (*domain.Category, error) {
 	// TODO: implement
 	return &domain.Category{}, nil
 }

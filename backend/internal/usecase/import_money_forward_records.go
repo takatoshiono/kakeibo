@@ -49,25 +49,25 @@ func (u *ImportMoneyForwardRecords) Execute(ctx context.Context) error {
 			return fmt.Errorf("failed to begin transaction: %w", err)
 		}
 
-		if _, err := u.masterRepo.CreateOrFindSource(ctx, record.Source); err != nil {
-			wrapErr := fmt.Errorf("failed to create or find source: %w", err)
+		if _, err := u.masterRepo.FindOrCreateSource(ctx, record.Source); err != nil {
+			wrapErr := fmt.Errorf("failed to find or create source: %w", err)
 			if err := u.transaction.Rollback(ctx); err != nil {
 				return fmt.Errorf("failed to rollback: %w", wrapErr)
 			}
 			return wrapErr
 		}
 
-		category1, err := u.masterRepo.CreateOrFindCategory(ctx, record.Category1, domain.CategoryLevel1, "")
+		category1, err := u.masterRepo.FindOrCreateCategory(ctx, record.Category1, domain.CategoryLevel1, "")
 		if err != nil {
-			wrapErr := fmt.Errorf("failed to create or find source: %w", err)
+			wrapErr := fmt.Errorf("failed to find or create source: %w", err)
 			if err := u.transaction.Rollback(ctx); err != nil {
 				return fmt.Errorf("failed to rollback: %w", wrapErr)
 			}
 			return wrapErr
 		}
 
-		if _, err := u.masterRepo.CreateOrFindCategory(ctx, record.Category2, domain.CategoryLevel2, category1.ID); err != nil {
-			wrapErr := fmt.Errorf("failed to create or find source: %w", err)
+		if _, err := u.masterRepo.FindOrCreateCategory(ctx, record.Category2, domain.CategoryLevel2, category1.ID); err != nil {
+			wrapErr := fmt.Errorf("failed to find or create source: %w", err)
 			if err := u.transaction.Rollback(ctx); err != nil {
 				return fmt.Errorf("failed to rollback: %w", wrapErr)
 			}
