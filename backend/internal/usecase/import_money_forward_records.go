@@ -59,7 +59,7 @@ func (u *ImportMoneyForwardRecords) Execute(ctx context.Context) error {
 
 		category1, err := u.masterRepo.FindOrCreateCategory(ctx, record.Category1, domain.CategoryLevel1, "")
 		if err != nil {
-			wrapErr := fmt.Errorf("failed to find or create source: %w", err)
+			wrapErr := fmt.Errorf("failed to find or create category level 1: %w", err)
 			if err := u.transaction.Rollback(ctx); err != nil {
 				return fmt.Errorf("failed to rollback: %w", wrapErr)
 			}
@@ -67,7 +67,7 @@ func (u *ImportMoneyForwardRecords) Execute(ctx context.Context) error {
 		}
 
 		if _, err := u.masterRepo.FindOrCreateCategory(ctx, record.Category2, domain.CategoryLevel2, category1.ID); err != nil {
-			wrapErr := fmt.Errorf("failed to find or create source: %w", err)
+			wrapErr := fmt.Errorf("failed to find or create category level 2: %w", err)
 			if err := u.transaction.Rollback(ctx); err != nil {
 				return fmt.Errorf("failed to rollback: %w", wrapErr)
 			}

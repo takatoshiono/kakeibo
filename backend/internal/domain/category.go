@@ -9,10 +9,13 @@ type Category struct {
 	Name string
 
 	// 階層
-	Level int
+	Level CategoryLevel
 
 	// 表示順
 	DisplayOrder int
+
+	// 親CategoryID
+	ParentID string
 }
 
 // CategoryLevel represents category hierarchy level.
