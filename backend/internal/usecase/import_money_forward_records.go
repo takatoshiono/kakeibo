@@ -49,7 +49,8 @@ func (u *ImportMoneyForwardRecords) Execute(ctx context.Context) error {
 			return fmt.Errorf("failed to begin transaction: %w", err)
 		}
 
-		if _, err := u.masterRepo.FindOrCreateSource(ctx, record.Source); err != nil {
+		source, err := u.masterRepo.FindOrCreateSource(ctx, record.SourceName)
+		if err != nil {
 			wrapErr := fmt.Errorf("failed to find or create source: %w", err)
 			if err := u.transaction.Rollback(ctx); err != nil {
 				return fmt.Errorf("failed to rollback: %w", wrapErr)
@@ -57,7 +58,7 @@ func (u *ImportMoneyForwardRecords) Execute(ctx context.Context) error {
 			return wrapErr
 		}
 
-		category1, err := u.masterRepo.FindOrCreateCategory(ctx, record.Category1, domain.CategoryLevel1, "")
+		category1, err := u.masterRepo.FindOrCreateCategory(ctx, record.Category1Name, domain.CategoryLevel1, "")
 		if err != nil {
 			wrapErr := fmt.Errorf("failed to find or create category level 1: %w", err)
 			if err := u.transaction.Rollback(ctx); err != nil {
@@ -66,7 +67,8 @@ func (u *ImportMoneyForwardRecords) Execute(ctx context.Context) error {
 			return wrapErr
 		}
 
-		if _, err := u.masterRepo.FindOrCreateCategory(ctx, record.Category2, domain.CategoryLevel2, category1.ID); err != nil {
+		category2, err := u.masterRepo.FindOrCreateCategory(ctx, record.Category2Name, domain.CategoryLevel2, category1.ID)
+		if err != nil {
 			wrapErr := fmt.Errorf("failed to find or create category level 2: %w", err)
 			if err := u.transaction.Rollback(ctx); err != nil {
 				return fmt.Errorf("failed to rollback: %w", wrapErr)
@@ -74,8 +76,12 @@ func (u *ImportMoneyForwardRecords) Execute(ctx context.Context) error {
 			return wrapErr
 		}
 
+		record.SourceID = source.ID
+		record.Category1ID = category1.ID
+		record.Category2ID = category2.ID
+
 		if err := u.mfRepo.CreateOrUpdateRecord(ctx, record); err != nil {
-			wrapErr := fmt.Errorf("failed to CreateOrUpdateRecord record: %w", err)
+			wrapErr := fmt.Errorf("failed to create or update record: %w", err)
 			if err := u.transaction.Rollback(ctx); err != nil {
 				return fmt.Errorf("failed to rollback: %w", wrapErr)
 			}

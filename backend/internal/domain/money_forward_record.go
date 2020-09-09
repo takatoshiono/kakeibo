@@ -21,13 +21,22 @@ type MoneyForwardRecord struct {
 	Amount int
 
 	// 保有金融機関
-	Source string
+	SourceName string
+
+	// 保有金融機関ID
+	SourceID string
 
 	// 大項目
-	Category1 string
+	Category1Name string
+
+	// 大項目ID
+	Category1ID string
 
 	// 中項目
-	Category2 string
+	Category2Name string
+
+	// 中項目ID
+	Category2ID string
 
 	// メモ
 	Memo string

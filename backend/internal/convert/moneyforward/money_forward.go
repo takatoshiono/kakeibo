@@ -42,9 +42,9 @@ func ConvCSVToDomain(fields []string) (*domain.MoneyForwardRecord, error) {
 		RecordedOn:          recordedOn,
 		Title:               fields[csvFieldTitle],
 		Amount:              int(amount),
-		Source:              fields[csvFieldSource],
-		Category1:           fields[csvFieldCategory1],
-		Category2:           fields[csvFieldCategory2],
+		SourceName:          fields[csvFieldSource],
+		Category1Name:       fields[csvFieldCategory1],
+		Category2Name:       fields[csvFieldCategory2],
 		Memo:                fields[csvFieldMemo],
 		IsTransfer:          convIsTransferToDomain(fields[csvFieldIsTransfer]),
 	}, nil

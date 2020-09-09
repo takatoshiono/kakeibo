@@ -73,6 +73,7 @@ func (repo *MasterRepository) FindOrCreateCategory(ctx context.Context, name str
 SELECT id, name, level, display_order, parent_id FROM categories WHERE name = ? AND level = ?`
 	findArgs := []interface{}{name, level}
 
+	// TODO: database packageのstructを定義してdomain packageのstructに変換したほうが良い？
 	c := &domain.Category{}
 	err := db.QueryRowContext(ctx, findQuery, findArgs...).Scan(&c.ID, &c.Name, &c.Level, &c.DisplayOrder, &c.ParentID)
 	switch {
