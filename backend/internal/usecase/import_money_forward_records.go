@@ -29,6 +29,7 @@ func NewImportMoneyForwardRecords(reader MoneyForwardCSVReader, transaction Tran
 
 // Execute executes the usecase.
 func (u *ImportMoneyForwardRecords) Execute(ctx context.Context) error {
+	// TODO: テスト書く
 	for {
 		fields, err := u.reader.Read()
 		if err == io.EOF {
@@ -44,6 +45,8 @@ func (u *ImportMoneyForwardRecords) Execute(ctx context.Context) error {
 		}
 
 		fmt.Println(record)
+
+		// TODO: 計算対象かつ振替でないレコードだけ保存する
 
 		if err := u.transaction.Begin(ctx); err != nil {
 			return fmt.Errorf("failed to begin transaction: %w", err)
