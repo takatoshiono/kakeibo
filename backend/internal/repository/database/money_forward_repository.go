@@ -71,7 +71,7 @@ func (repo *MoneyForwardRepository) updateRecord(ctx context.Context, record *do
 
 	const updateQuery = `
 UPDATE money_forward_records
-SET recorded_on = ?, title = ?, amount = ?, source_id = ?, category_id = ?, memo = ?, updated_at = ?)
+SET recorded_on = ?, title = ?, amount = ?, source_id = ?, category_id = ?, memo = ?, updated_at = ?
 WHERE id = ?`
 	updateArgs := []interface{}{record.RecordedOn.String(), record.Title, record.Amount, record.SourceID, record.Category2ID, record.Memo, now, record.ID}
 
