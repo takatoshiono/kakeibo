@@ -15,12 +15,7 @@ import (
 )
 
 // NewCmdDBImport creates the `db import` command.
-func NewCmdDBImport() *cobra.Command {
-	o := &DBImportOptions{
-		DriverName: os.Getenv("DB_DRIVER_NAME"),
-		DSN:        os.Getenv("DB_DSN"),
-	}
-
+func NewCmdDBImport(o *ImportOption) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "import",
 		Short: "Import files to database",
@@ -30,21 +25,21 @@ func NewCmdDBImport() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().StringVarP(&o.FileName, "file", "f", "in.csv", "input file name")
+	cmd.Flags().StringVarP(&o.fileName, "file", "f", "in.csv", "input file name")
 
 	return cmd
 }
 
-// DBImportOptions creates new DBImportOptions for the `db import` command.
-type DBImportOptions struct {
+// ImportOption is the option for the `db import` command.
+type ImportOption struct {
 	DriverName string
 	DSN        string
-	FileName   string
+	fileName   string
 }
 
 // Run executes the `db import` command.
-func (o *DBImportOptions) Run() error {
-	f, err := os.Open(o.FileName)
+func (o *ImportOption) Run() error {
+	f, err := os.Open(o.fileName)
 	if err != nil {
 		return fmt.Errorf("failed to open: %w", err)
 	}

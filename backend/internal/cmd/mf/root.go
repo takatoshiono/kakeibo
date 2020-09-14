@@ -13,36 +13,48 @@ import (
 
 var cfgFile string
 
-var RootCmd = &cobra.Command{
-	Use:   "mf",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
+func init() {
+	cobra.OnInitialize(initConfig)
+}
+
+// NewCmd creates the `mf` command.
+func NewCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "mf",
+		Short: "A brief description of your application",
+		Long: `A longer description that spans multiple lines and likely contains
 examples and usage of using your application. For example:
 
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	//	Run: func(cmd *cobra.Command, args []string) { },
-}
-
-func init() {
-	cobra.OnInitialize(initConfig)
+		// Uncomment the following line if your bare application
+		// has an action associated with it:
+		//	Run: func(cmd *cobra.Command, args []string) { },
+	}
 
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 
-	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.mf.yaml)")
+	cmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.mf.yaml)")
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
-	RootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	cmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
-	RootCmd.AddCommand(driveCmd)
-	RootCmd.AddCommand(db.NewCmdDB())
-	RootCmd.AddCommand(csvCmd)
+	cmd.AddCommand(driveCmd)
+	cmd.AddCommand(db.NewCmdDB(
+		&db.Options{
+			ImportOption: &db.ImportOption{
+				DriverName: os.Getenv("DB_DRIVER_NAME"),
+				DSN:        os.Getenv("DB_DSN"),
+			},
+		},
+	))
+	cmd.AddCommand(csvCmd)
+
+	return cmd
 }
 
 // initConfig reads in config file and ENV variables if set.
