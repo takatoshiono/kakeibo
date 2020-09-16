@@ -11,6 +11,12 @@ import (
 	"github.com/takatoshiono/kakeibo/backend/internal/cmd/mf/db"
 )
 
+// Option is the option for the `mf` command.
+type Option struct {
+	DriverName string
+	DSN        string
+}
+
 var cfgFile string
 
 func init() {
@@ -18,7 +24,7 @@ func init() {
 }
 
 // NewCmd creates the `mf` command.
-func NewCmd() *cobra.Command {
+func NewCmd(o *Option) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "mf",
 		Short: "A brief description of your application",
@@ -47,8 +53,8 @@ to quickly create a Cobra application.`,
 	cmd.AddCommand(db.NewCmdDB(
 		&db.Options{
 			ImportOption: &db.ImportOption{
-				DriverName: os.Getenv("DB_DRIVER_NAME"),
-				DSN:        os.Getenv("DB_DSN"),
+				DriverName: o.DriverName,
+				DSN:        o.DSN,
 			},
 		},
 	))
