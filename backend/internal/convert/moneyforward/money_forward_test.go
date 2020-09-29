@@ -3,8 +3,7 @@ package moneyforward
 import (
 	"reflect"
 	"testing"
-
-	"cloud.google.com/go/civil"
+	"time"
 
 	"github.com/takatoshiono/kakeibo/backend/internal/domain"
 )
@@ -29,12 +28,12 @@ func TestConvCSVToDomain(t *testing.T) {
 			want: &domain.MoneyForwardRecord{
 				ID:                  "qi03Xo5JDVYjZC2HqFA9Sg",
 				IsCalculationTarget: true,
-				RecordedOn:          civil.Date{Year: 2020, Month: 7, Day: 25},
+				RecordedOn:          time.Date(2020, 7, 25, 0, 0, 0, 0, time.UTC),
 				Title:               "西友",
 				Amount:              -3612,
-				Source:              "セゾンカード",
-				Category1:           "食費",
-				Category2:           "食料品",
+				SourceName:          "セゾンカード",
+				Category1Name:       "食費",
+				Category2Name:       "食料品",
 				Memo:                "",
 				IsTransfer:          false,
 			},

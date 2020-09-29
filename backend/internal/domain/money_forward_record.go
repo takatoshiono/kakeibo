@@ -1,8 +1,6 @@
 package domain
 
-import (
-	"cloud.google.com/go/civil"
-)
+import "time"
 
 type MoneyForwardRecord struct {
 	// ID
@@ -12,7 +10,7 @@ type MoneyForwardRecord struct {
 	IsCalculationTarget bool
 
 	// 日付
-	RecordedOn civil.Date
+	RecordedOn time.Time
 
 	// 内容
 	Title string

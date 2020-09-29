@@ -5,8 +5,6 @@ import (
 	"strconv"
 	"time"
 
-	"cloud.google.com/go/civil"
-
 	"github.com/takatoshiono/kakeibo/backend/internal/domain"
 )
 
@@ -54,12 +52,12 @@ func convIsCalculationTargetToDomain(v string) bool {
 	return v == "1"
 }
 
-func convRecordedOnToDomain(v string) (civil.Date, error) {
+func convRecordedOnToDomain(v string) (time.Time, error) {
 	t, err := time.Parse(recordedOnFormat, v)
 	if err != nil {
-		return civil.Date{}, fmt.Errorf("failed to parse: %w", err)
+		return time.Time{}, fmt.Errorf("failed to parse: %w", err)
 	}
-	return civil.DateOf(t), nil
+	return t, nil
 }
 
 func convIsTransferToDomain(v string) bool {

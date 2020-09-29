@@ -55,7 +55,7 @@ func (repo *MoneyForwardRepository) createRecord(ctx context.Context, record *do
 	const insertQuery = `
 INSERT INTO money_forward_records(id, recorded_on, title, amount, source_id, category_id, memo, created_at, updated_at)
 VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)`
-	insertArgs := []interface{}{record.ID, record.RecordedOn.String(), record.Title, record.Amount, record.SourceID, record.Category2ID, record.Memo, now, now}
+	insertArgs := []interface{}{record.ID, record.RecordedOn.Format("2006-01-02"), record.Title, record.Amount, record.SourceID, record.Category2ID, record.Memo, now, now}
 
 	if _, err := db.ExecContext(ctx, insertQuery, insertArgs...); err != nil {
 		return fmt.Errorf("failed to execute insert query: %w", err)
@@ -73,7 +73,7 @@ func (repo *MoneyForwardRepository) updateRecord(ctx context.Context, record *do
 UPDATE money_forward_records
 SET recorded_on = ?, title = ?, amount = ?, source_id = ?, category_id = ?, memo = ?, updated_at = ?
 WHERE id = ?`
-	updateArgs := []interface{}{record.RecordedOn.String(), record.Title, record.Amount, record.SourceID, record.Category2ID, record.Memo, now, record.ID}
+	updateArgs := []interface{}{record.RecordedOn.Format("2006-01-02"), record.Title, record.Amount, record.SourceID, record.Category2ID, record.Memo, now, record.ID}
 
 	if _, err := db.ExecContext(ctx, updateQuery, updateArgs...); err != nil {
 		return fmt.Errorf("failed to execute update query: %w", err)
