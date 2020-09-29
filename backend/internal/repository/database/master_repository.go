@@ -109,3 +109,35 @@ VALUES(?, ?, ?, ?, ?, ?, ?)`
 		ParentID:     parentID,
 	}, nil
 }
+
+// FindSourceByName finds the source by name.
+func (repo *MasterRepository) FindSourceByName(ctx context.Context, name string) (*domain.Source, error) {
+	db := repo.transaction.getDB()
+
+	const findQuery = `
+SELECT id, name, display_order FROM sources WHERE name = ?`
+	findArgs := []interface{}{name}
+
+	s := &domain.Source{}
+	if err := db.QueryRowContext(ctx, findQuery, findArgs...).Scan(&s.ID, &s.Name, &s.DisplayOrder); err != nil {
+		return nil, fmt.Errorf("failed to scan: %w", err)
+	}
+
+	return s, nil
+}
+
+// FindCategoryByNameAndLevel finds the category by name and level.
+func (repo *MasterRepository) FindCategoryByNameAndLevel(ctx context.Context, name string, level domain.CategoryLevel) (*domain.Category, error) {
+	db := repo.transaction.getDB()
+
+	const findQuery = `
+SELECT id, name, level, display_order, parent_id FROM categories WHERE name = ? AND level = ?`
+	findArgs := []interface{}{name, level}
+
+	c := &domain.Category{}
+	if err := db.QueryRowContext(ctx, findQuery, findArgs...).Scan(&c.ID, &c.Name, &c.Level, &c.DisplayOrder, &c.ParentID); err != nil {
+		return nil, fmt.Errorf("failed to scan: %w", err)
+	}
+
+	return c, nil
+}

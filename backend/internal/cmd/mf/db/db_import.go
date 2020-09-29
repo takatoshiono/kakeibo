@@ -21,10 +21,12 @@ func NewCmdDBImport(o *ImportOption) *cobra.Command {
 		Short: "Import files to database",
 		Long:  `This command import files to database`,
 		RunE: func(cmd *cobra.Command, args []string) error {
+			// TODO: o.Validate()みたいのを追加する
 			return o.Run()
 		},
 	}
 
+	// TODO: defaultのin.csvやめる
 	cmd.Flags().StringVarP(&o.fileName, "file", "f", "in.csv", "input file name")
 
 	return cmd
