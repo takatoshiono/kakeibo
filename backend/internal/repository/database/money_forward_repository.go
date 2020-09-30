@@ -79,7 +79,6 @@ func (repo *MoneyForwardRepository) createRecord(ctx context.Context, record *do
 	const insertQuery = `
 INSERT INTO money_forward_records(id, recorded_on, title, amount, source_id, category_id, memo, created_at, updated_at)
 VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)`
-	// TODO: RecordedOnは型を定義してRecordedOn.String() とかで YYYY-MM-DD を取得できるとよさそう
 	insertArgs := []interface{}{record.ID, record.RecordedOn.Format("2006-01-02"), record.Title, record.Amount, record.SourceID, record.Category2ID, record.Memo, now, now}
 
 	if _, err := db.ExecContext(ctx, insertQuery, insertArgs...); err != nil {

@@ -2,6 +2,8 @@ package db
 
 import (
 	"context"
+	"database/sql"
+	"errors"
 	"testing"
 	"time"
 
@@ -63,6 +65,8 @@ func TestNewCmdDBImport(t *testing.T) {
 			Memo:                "",
 			IsTransfer:          false,
 		},
+	}
+	notExpected := []*domain.MoneyForwardRecord{
 		{
 			ID:                  "CETj9SskFWNAoj_d6GkWhQ",
 			IsCalculationTarget: false,
@@ -79,11 +83,13 @@ func TestNewCmdDBImport(t *testing.T) {
 			IsTransfer:          true,
 		},
 	}
+
 	db := testutil.MustGetDB()
 	transaction := database.NewTransaction(db)
 	masterRepo := database.NewMasterRepository(transaction)
 	mfRepo := database.NewMoneyForwardRepository(transaction)
 	ctx := context.Background()
+
 	for _, want := range expected {
 		s, err := masterRepo.FindSourceByName(ctx, want.SourceName)
 		if err != nil {
@@ -120,6 +126,13 @@ func TestNewCmdDBImport(t *testing.T) {
 		}
 		if d := cmp.Diff(want, got, opts); d != "" {
 			t.Error(d)
+		}
+	}
+
+	for _, want := range notExpected {
+		_, err := mfRepo.FindRecord(ctx, want.ID)
+		if !errors.Is(err, sql.ErrNoRows) {
+			t.Errorf("want err no rows, but got err %v", err)
 		}
 	}
 }

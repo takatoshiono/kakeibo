@@ -42,3 +42,8 @@ type MoneyForwardRecord struct {
 	// 振替
 	IsTransfer bool
 }
+
+// IsRecordToSave returns true if it is a record to save.
+func (r *MoneyForwardRecord) IsRecordToSave() bool {
+	return r.IsCalculationTarget && !r.IsTransfer
+}
