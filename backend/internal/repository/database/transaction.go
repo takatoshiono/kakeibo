@@ -3,6 +3,7 @@ package database
 import (
 	"context"
 	"database/sql"
+	"fmt"
 )
 
 // DB is an interface for DB and Tx of database/sql
@@ -32,19 +33,35 @@ func NewTransaction(db *sql.DB) *Transaction {
 
 // Begin starts a transaction.
 func (tx *Transaction) Begin(ctx context.Context) error {
-	// TODO: implement
+	if tx.currentTx == nil {
+		x, err := tx.db.BeginTx(ctx, nil)
+		if err != nil {
+			return fmt.Errorf("failed to begin tx: %w", err)
+		}
+		tx.currentTx = x
+	}
 	return nil
 }
 
 // Commit commits a transaction.
 func (tx *Transaction) Commit(ctx context.Context) error {
-	// TODO: implement
+	if tx.currentTx != nil {
+		if err := tx.currentTx.Commit(); err != nil {
+			return fmt.Errorf("failed to commit: %w", err)
+		}
+		tx.currentTx = nil
+	}
 	return nil
 }
 
 // Rollback rollbacks a transaction.
 func (tx *Transaction) Rollback(ctx context.Context) error {
-	// TODO: implement
+	if tx.currentTx != nil {
+		if err := tx.currentTx.Rollback(); err != nil {
+			return fmt.Errorf("failed to rollback: %w", err)
+		}
+		tx.currentTx = nil
+	}
 	return nil
 }
 
