@@ -21,13 +21,14 @@ func NewCmdDBImport(o *ImportOption) *cobra.Command {
 		Short: "Import files to database",
 		Long:  `This command import files to database`,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			// TODO: o.Validate()みたいのを追加する
+			if err := o.Validate(); err != nil {
+				return err
+			}
 			return o.Run()
 		},
 	}
 
-	// TODO: defaultのin.csvやめる
-	cmd.Flags().StringVarP(&o.fileName, "file", "f", "in.csv", "input file name")
+	cmd.Flags().StringVarP(&o.fileName, "file", "f", "", "input filename")
 
 	return cmd
 }
@@ -37,6 +38,14 @@ type ImportOption struct {
 	DriverName string
 	DSN        string
 	fileName   string
+}
+
+// Validate checks options.
+func (o *ImportOption) Validate() error {
+	if o.fileName == "" {
+		return fmt.Errorf("filename must not be empty")
+	}
+	return nil
 }
 
 // Run executes the `db import` command.
