@@ -1,0 +1,4 @@
+/.env
+/.vscode/
+/coverage.out
+/db/*.sqlite3
