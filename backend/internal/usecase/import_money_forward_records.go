@@ -43,8 +43,6 @@ func (u *ImportMoneyForwardRecords) Execute(ctx context.Context) error {
 			return fmt.Errorf("failed to convert: %w", err)
 		}
 
-		fmt.Println(record)
-
 		if !record.IsRecordToSave() {
 			continue
 		}
