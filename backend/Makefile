@@ -1,0 +1,3 @@
+.PHONY: test
+test:
+	go test -race -v -coverprofile coverage.out ./...
