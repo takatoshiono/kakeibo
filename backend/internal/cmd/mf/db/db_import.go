@@ -28,7 +28,7 @@ func NewCmdDBImport(o *ImportOption) *cobra.Command {
 		},
 	}
 
-	cmd.Flags().StringVarP(&o.fileName, "file", "f", "", "input filename")
+	cmd.Flags().StringVarP(&o.fileName, "file", "f", "", "input file name")
 
 	return cmd
 }
@@ -43,7 +43,7 @@ type ImportOption struct {
 // Validate checks options.
 func (o *ImportOption) Validate() error {
 	if o.fileName == "" {
-		return fmt.Errorf("filename must not be empty")
+		return fmt.Errorf("file name must not be empty")
 	}
 	return nil
 }

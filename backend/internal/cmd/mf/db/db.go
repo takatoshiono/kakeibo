@@ -19,6 +19,7 @@ func NewCmdDB(o *Options) *cobra.Command {
 		Long:  `Work with database`,
 	}
 
+	// TODO: Add delete command
 	cmd.AddCommand(NewCmdDBImport(o.ImportOption))
 
 	return cmd

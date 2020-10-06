@@ -9,6 +9,7 @@ import (
 	"github.com/spf13/viper"
 
 	"github.com/takatoshiono/kakeibo/backend/internal/cmd/mf/db"
+	"github.com/takatoshiono/kakeibo/backend/internal/cmd/mf/drive"
 )
 
 // Option is the option for the `mf` command.
@@ -49,7 +50,13 @@ to quickly create a Cobra application.`,
 	// when this action is called directly.
 	cmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
-	cmd.AddCommand(driveCmd)
+	// TODO: change to NewXXX
+	cmd.AddCommand(drive.NewCmdDrive(
+		&drive.Options{
+			UploadOption:   &drive.UploadOption{},
+			DownloadOption: &drive.DownloadOption{},
+		},
+	))
 	cmd.AddCommand(db.NewCmdDB(
 		&db.Options{
 			ImportOption: &db.ImportOption{
