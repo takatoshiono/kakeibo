@@ -8,14 +8,17 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
+	"github.com/takatoshiono/kakeibo/backend/internal/cmd/mf/csv"
 	"github.com/takatoshiono/kakeibo/backend/internal/cmd/mf/db"
 	"github.com/takatoshiono/kakeibo/backend/internal/cmd/mf/drive"
 )
 
 // Option is the option for the `mf` command.
 type Option struct {
-	DriverName string
-	DSN        string
+	DriverName           string
+	DSN                  string
+	MoneyForwardEmail    string
+	MoneyForwardPassword string
 }
 
 var cfgFile string
@@ -50,7 +53,6 @@ to quickly create a Cobra application.`,
 	// when this action is called directly.
 	cmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
-	// TODO: change to NewXXX
 	cmd.AddCommand(drive.NewCmdDrive(
 		&drive.Options{
 			UploadOption:   &drive.UploadOption{},
@@ -65,7 +67,14 @@ to quickly create a Cobra application.`,
 			},
 		},
 	))
-	cmd.AddCommand(csvCmd)
+	cmd.AddCommand(csv.NewCmdCSV(
+		&csv.Options{
+			DownloadOption: &csv.DownloadOption{
+				MoneyForwardEmail:    o.MoneyForwardEmail,
+				MoneyForwardPassword: o.MoneyForwardPassword,
+			},
+		},
+	))
 
 	return cmd
 }

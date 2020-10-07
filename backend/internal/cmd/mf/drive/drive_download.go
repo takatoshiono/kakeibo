@@ -38,7 +38,7 @@ func (o *DownloadOption) Validate() error {
 	return nil
 }
 
-// Run executes the `drive upload` command.
+// Run executes the `drive download` command.
 func (o *DownloadOption) Run() error {
 	return errors.New("not implemented")
 }

@@ -8,10 +8,12 @@ import (
 
 // Config is the configuration of this application.
 type Config struct {
-	DBDriverName     string `envconfig:"DB_DRIVER_NAME"`
-	DBDSN            string `envconfig:"DB_DSN"`
-	TestDBDriverName string `envconfig:"TEST_DB_DRIVER_NAME"`
-	TestDBDSN        string `envconfig:"TEST_DB_DSN"`
+	DBDriverName         string `envconfig:"DB_DRIVER_NAME"`
+	DBDSN                string `envconfig:"DB_DSN"`
+	MoneyForwardEmail    string `envconfig:"MONEY_FORWARD_EMAIL"`
+	MoneyForwardPassword string `envconfig:"MONEY_FORWARD_PASSWORD"`
+	TestDBDriverName     string `envconfig:"TEST_DB_DRIVER_NAME"`
+	TestDBDSN            string `envconfig:"TEST_DB_DSN"`
 }
 
 // Get returns the config.

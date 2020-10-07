@@ -22,8 +22,10 @@ func realMain() error {
 	}
 
 	if err := mf.NewCmd(&mf.Option{
-		DriverName: c.DBDriverName,
-		DSN:        c.DBDSN,
+		DriverName:           c.DBDriverName,
+		DSN:                  c.DBDSN,
+		MoneyForwardEmail:    c.MoneyForwardEmail,
+		MoneyForwardPassword: c.MoneyForwardPassword,
 	}).Execute(); err != nil {
 		return fmt.Errorf("failed to execute: %w", err)
 	}
