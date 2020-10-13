@@ -13,6 +13,13 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: '^1.15.0'
+      - name: Setup sqlite3
+        run: |
+          sudo apt install sqlite3
+          sqlite3 $TEST_DB_DSN
+      - name: Setup db
+        run: |
+          sqlite3 $TEST_DB_DSN < backend/db/schema.sql
       - name: Run test
         run: |
           cd backend
