@@ -6,6 +6,9 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
+    env:
+      TEST_DB_DRIVER_NAME: sqlite3
+      TEST_DB_DSN: /tmp/test-db.sqlite3
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -24,6 +27,3 @@ jobs:
         run: |
           cd backend
           make test
-        env:
-          TEST_DB_DRIVER_NAME: sqlite3
-          TEST_DB_DSN: /tmp/test-db.sqlite3
