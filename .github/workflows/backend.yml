@@ -1,0 +1,33 @@
+name: backend CI
+
+on: push
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    env:
+      TEST_DB_DRIVER_NAME: sqlite3
+      TEST_DB_DSN: /tmp/test-db.sqlite3
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Go environment
+        uses: actions/setup-go@v2
+        with:
+          go-version: '^1.15.0'
+      - name: Setup sqlite3
+        run: |
+          sudo apt install sqlite3
+          sqlite3 $TEST_DB_DSN
+      - name: Setup db
+        run: |
+          sqlite3 $TEST_DB_DSN < backend/db/schema.sql
+      - name: Run test
+        run: |
+          cd backend
+          make test
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          file: ./backend/coverage.out
