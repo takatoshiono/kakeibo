@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 
 	"github.com/spf13/cobra"
+
 	"github.com/takatoshiono/kakeibo/backend/internal/googledrive"
 )
 
@@ -31,8 +32,8 @@ So please to set GOOGLE_APPLICATION_CREDENTIALS environment variable.
 		},
 	}
 
-	cmd.Flags().StringP("file", "f", "", "upload file path")
-	cmd.Flags().StringP("parent", "p", "", "parent folder id")
+	cmd.Flags().StringVarP(&o.fileName, "file", "f", "", "upload file path")
+	cmd.Flags().StringVarP(&o.parentID, "parent", "p", "", "parent folder id")
 	cmd.MarkFlagRequired("file")
 	cmd.MarkFlagRequired("parent")
 
