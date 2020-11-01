@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
+
 	"github.com/takatoshiono/kakeibo/backend/internal/moneyforward"
 )
 
@@ -26,9 +27,9 @@ func NewCmdCSVDownload(o *DownloadOption) *cobra.Command {
 	}
 
 	now := time.Now()
-	cmd.Flags().IntP("year", "y", now.Year(), "year. format is YYYY")
-	cmd.Flags().IntP("month", "m", int(now.Month()), "month. format is 1 to 12")
-	cmd.Flags().StringP("filename", "f", "out.csv", "output filename")
+	cmd.Flags().IntVarP(&o.year, "year", "y", now.Year(), "year. format is YYYY")
+	cmd.Flags().IntVarP(&o.month, "month", "m", int(now.Month()), "month. format is 1 to 12")
+	cmd.Flags().StringVarP(&o.fileName, "filename", "f", "out.csv", "output filename")
 
 	return cmd
 }
