@@ -44,8 +44,26 @@ func New(email, password string) *MoneyForward {
 // 	- redirect three times
 // 	- finally redirect to https://moneyforward.com/
 func (m *MoneyForward) Login(ctx context.Context) error {
-	chromeCtx, cancel := chromedp.NewContext(ctx)
+	opts := append(chromedp.DefaultExecAllocatorOptions[:],
+		chromedp.Flag("headless", false), // headlessだと403 Forbiddenになるので解除
+	)
+
+	allocCtx, cancel := chromedp.NewExecAllocator(ctx, opts...)
 	defer cancel()
+
+	chromeCtx, cancel := chromedp.NewContext(allocCtx)
+	defer cancel()
+
+	// for debug
+	//chromedp.ListenTarget(chromeCtx, func(ev interface{}) {
+	//	switch ev := ev.(type) {
+	//	case *network.EventRequestWillBeSent:
+	//		log.Println("RequestHeaders:")
+	//		for k, v := range ev.Request.Headers {
+	//			log.Printf("  %s: %s\n", k, v)
+	//		}
+	//	}
+	//})
 
 	if err := chromedp.Run(chromeCtx,
 		chromedp.Navigate(loginURL),
