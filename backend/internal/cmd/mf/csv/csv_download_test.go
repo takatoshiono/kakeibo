@@ -189,6 +189,14 @@ func TestDownloadOption_Parse(t *testing.T) {
 			},
 			wantErr: false,
 		},
+		{
+			name: "ok if fromTime and toTime are not both set",
+			fields: fields{
+				fromTime: time.Time{},
+				toTime:   time.Time{},
+			},
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
