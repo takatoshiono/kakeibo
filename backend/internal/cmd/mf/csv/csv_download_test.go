@@ -1,9 +1,54 @@
 package csv
 
 import (
+	"reflect"
 	"testing"
 	"time"
 )
+
+func TestNewCmdCSVDownload(t *testing.T) {
+	type args struct {
+		o *DownloadOption
+		a []string
+	}
+	tests := []struct {
+		name string
+		args args
+		want *DownloadOption
+	}{
+		{
+			name: "ok",
+			args: args{
+				o: &DownloadOption{},
+				a: []string{
+					"--year", "2020",
+					"--month", "10",
+					"--from", "202010",
+					"--to", "202011",
+					"--filename", "test.csv",
+				},
+			},
+			want: &DownloadOption{
+				year:     2020,
+				month:    10,
+				from:     "202010",
+				to:       "202011",
+				fileName: "test.csv",
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			c := NewCmdCSVDownload(tt.args.o)
+			if err := c.ParseFlags(tt.args.a); err != nil {
+				t.Errorf("c.ParseFlags() = %v, want nil", err)
+			}
+			if got := tt.args.o; !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("got %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
 
 func TestDownloadOption_Validate(t *testing.T) {
 	type fields struct {
