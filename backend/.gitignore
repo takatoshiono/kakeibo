@@ -1,4 +1,5 @@
 /.env
 /.vscode/
+/build
 /coverage.out
 /db/*.sqlite3
