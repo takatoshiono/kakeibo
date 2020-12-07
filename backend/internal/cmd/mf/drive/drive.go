@@ -9,6 +9,7 @@ type (
 	Options struct {
 		UploadOption   *UploadOption
 		DownloadOption *DownloadOption
+		DeleteOption   *DeleteOption
 	}
 )
 
@@ -22,6 +23,7 @@ func NewCmdDrive(o *Options) *cobra.Command {
 
 	cmd.AddCommand(NewCmdDriveUpload(o.UploadOption))
 	cmd.AddCommand(NewCmdDriveDownload(o.DownloadOption))
+	cmd.AddCommand(NewCmdDriveDelete(o.DeleteOption))
 
 	return cmd
 }
