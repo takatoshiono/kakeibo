@@ -52,6 +52,7 @@ func NewCmd(o *Option) *cobra.Command {
 		&drive.Options{
 			UploadOption:   &drive.UploadOption{},
 			DownloadOption: &drive.DownloadOption{},
+			DeleteOption:   &drive.DeleteOption{},
 		},
 	))
 	cmd.AddCommand(db.NewCmdDB(
