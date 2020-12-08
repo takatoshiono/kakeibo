@@ -71,11 +71,12 @@ func (o *UploadOption) Run() error {
 		log.Fatalf("failed to new googledrive: %v", err)
 	}
 
-	fileID, err := d.CreateFile(ctx, f, filepath.Base(o.fileName), "text/plain", o.parentID)
+	fileName := filepath.Base(o.fileName)
+	fileID, err := d.CreateFile(ctx, f, fileName, "text/plain", o.parentID)
 	if err != nil {
 		log.Fatalf("failed to create file: %v", err)
 	}
-	fmt.Printf("created %s\n", fileID)
+	fmt.Printf("created %s (%s)\n", fileName, fileID)
 
 	return nil
 }

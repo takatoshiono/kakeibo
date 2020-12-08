@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"path/filepath"
 
 	"github.com/spf13/cobra"
 
@@ -63,10 +64,11 @@ func (o *DeleteOption) Run() error {
 		log.Fatalf("failed to new googledrive: %v", err)
 	}
 
-	if err := d.DeleteFileByName(ctx, o.fileName, o.parentID); err != nil {
+	fileName := filepath.Base(o.fileName)
+	if err := d.DeleteFileByName(ctx, fileName, o.parentID); err != nil {
 		log.Fatalf("failed to delete file: %v", err)
 	}
-	fmt.Printf("deleted %s\n", o.fileName)
+	fmt.Printf("deleted %s\n", fileName)
 
 	return nil
 }
