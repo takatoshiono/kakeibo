@@ -8,6 +8,7 @@ type (
 	// Options is the collection of options for the `db` command and its sub command.
 	Options struct {
 		ImportOption *ImportOption
+		StatsOption  *StatsOption
 	}
 )
 
@@ -21,6 +22,7 @@ func NewCmdDB(o *Options) *cobra.Command {
 
 	// TODO: Add delete command
 	cmd.AddCommand(NewCmdDBImport(o.ImportOption))
+	cmd.AddCommand(NewCmdDBStats(o.StatsOption))
 
 	return cmd
 }

@@ -42,3 +42,8 @@ type MasterRepository interface {
 type MoneyForwardRepository interface {
 	CreateOrUpdateRecord(ctx context.Context, record *domain.MoneyForwardRecord) error
 }
+
+// StatsRepository is a interface of StatsRepository.
+type StatsRepository interface {
+	FindAmountExpendedByMonth(ctx context.Context, year int) ([]*domain.AmountExpendedByMonth, error)
+}
