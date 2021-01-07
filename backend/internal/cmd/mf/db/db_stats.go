@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"os"
 
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/spf13/cobra"
@@ -60,7 +61,7 @@ func (o *StatsOption) Run() error {
 	transaction := database.NewTransaction(db)
 	statsRepo := database.NewStatsRepository(transaction)
 
-	u := usecase.NewStatsMoneyForwardRecords(transaction, statsRepo)
+	u := usecase.NewStatsMoneyForwardRecords(transaction, statsRepo, os.Stdout)
 	args := &usecase.StatsMoneyForwardRecordsArgs{
 		Year: o.year,
 	}

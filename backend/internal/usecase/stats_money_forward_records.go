@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/csv"
 	"fmt"
-	"os"
+	"io"
 	"strconv"
 )
 
@@ -17,13 +17,15 @@ type StatsMoneyForwardRecordsArgs struct {
 type StatsMoneyForwardRecords struct {
 	transaction Transaction
 	statsRepo   StatsRepository
+	w           io.Writer
 }
 
 // NewStatsMoneyForwardRecords returns a new StatsMoneyForwardRecords usecase.
-func NewStatsMoneyForwardRecords(transaction Transaction, statsRepo StatsRepository) *StatsMoneyForwardRecords {
+func NewStatsMoneyForwardRecords(transaction Transaction, statsRepo StatsRepository, w io.Writer) *StatsMoneyForwardRecords {
 	return &StatsMoneyForwardRecords{
 		transaction: transaction,
 		statsRepo:   statsRepo,
+		w:           w,
 	}
 }
 
@@ -52,7 +54,7 @@ func (u *StatsMoneyForwardRecords) Execute(ctx context.Context, queryName string
 }
 
 func (u *StatsMoneyForwardRecords) outputCSV(records [][]string) error {
-	w := csv.NewWriter(os.Stdout)
+	w := csv.NewWriter(u.w)
 	for _, record := range records {
 		if err := w.Write(record); err != nil {
 			return fmt.Errorf("failed to write: %w", err)
