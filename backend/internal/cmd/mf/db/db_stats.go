@@ -6,14 +6,12 @@ import (
 	"fmt"
 	"os"
 
-	_ "github.com/mattn/go-sqlite3"
+	_ "github.com/mattn/go-sqlite3" // support `sqlite3` driver
 	"github.com/spf13/cobra"
 
 	"github.com/takatoshiono/kakeibo/backend/internal/repository/database"
 	"github.com/takatoshiono/kakeibo/backend/internal/usecase"
 )
-
-// support `sqlite3` driver
 
 // NewCmdDBStats creates the `db stats` command.
 func NewCmdDBStats(o *StatsOption) *cobra.Command {
