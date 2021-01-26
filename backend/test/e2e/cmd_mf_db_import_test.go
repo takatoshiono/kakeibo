@@ -1,4 +1,4 @@
-package db
+package e2e
 
 import (
 	"context"
@@ -9,28 +9,28 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
-	_ "github.com/mattn/go-sqlite3"
 
+	"github.com/takatoshiono/kakeibo/backend/internal/cmd/mf"
 	"github.com/takatoshiono/kakeibo/backend/internal/domain"
 	"github.com/takatoshiono/kakeibo/backend/internal/repository/database"
 	"github.com/takatoshiono/kakeibo/backend/internal/testutil"
 )
 
 const (
-	filenameMF = "../../../../testdata/mf/mf.csv"
+	filenameMF = "../../testdata/mf/mf.csv"
 )
 
-func TestNewCmdDBImport(t *testing.T) {
+func TestCmdMFDBImport(t *testing.T) {
 	// TODO: テストデータを消す
 	// TODO: CreateのケースとUpdateのケースを明示的にテストする
 	c := testutil.MustGetConfig()
-	cmd := NewCmdDBImport(&ImportOption{
+	opt := &mf.Option{
 		DriverName: c.TestDBDriverName,
 		DSN:        c.TestDBDSN,
-	})
-	cmd.Flags().Set("file", filenameMF)
-	err := cmd.RunE(cmd, []string{})
-	if err != nil {
+	}
+	cmd := mf.NewCmd(opt)
+	cmd.SetArgs([]string{"db", "import", "--file", filenameMF})
+	if err := cmd.Execute(); err != nil {
 		t.Fatal(err)
 	}
 
