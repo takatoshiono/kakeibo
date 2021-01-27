@@ -16,12 +16,7 @@ import (
 	"github.com/takatoshiono/kakeibo/backend/internal/testutil"
 )
 
-const (
-	filenameMF = "../../testdata/mf/mf.csv"
-)
-
 func TestCmdMFDBImport(t *testing.T) {
-	// TODO: テストデータを消す
 	// TODO: CreateのケースとUpdateのケースを明示的にテストする
 	c := testutil.MustGetConfig()
 	opt := &mf.Option{
@@ -89,6 +84,12 @@ func TestCmdMFDBImport(t *testing.T) {
 	masterRepo := database.NewMasterRepository(transaction)
 	mfRepo := database.NewMoneyForwardRepository(transaction)
 	ctx := context.Background()
+
+	defer func() {
+		testutil.TruncateTable(ctx, t, db, "money_forward_records")
+		testutil.TruncateTable(ctx, t, db, "categories")
+		testutil.TruncateTable(ctx, t, db, "sources")
+	}()
 
 	for _, want := range expected {
 		s, err := masterRepo.FindSourceByName(ctx, want.SourceName)
