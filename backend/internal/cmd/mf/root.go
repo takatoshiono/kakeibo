@@ -61,6 +61,10 @@ func NewCmd(o *Option) *cobra.Command {
 				DriverName: o.DriverName,
 				DSN:        o.DSN,
 			},
+			StatsOption: &db.StatsOption{
+				DriverName: o.DriverName,
+				DSN:        o.DSN,
+			},
 		},
 	))
 	cmd.AddCommand(csv.NewCmdCSV(

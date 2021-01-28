@@ -1,8 +1,10 @@
 package testutil
 
 import (
+	"context"
 	"database/sql"
 	"sync"
+	"testing"
 
 	"github.com/takatoshiono/kakeibo/backend/internal/config"
 )
@@ -31,4 +33,12 @@ func MustGetDB() *sql.DB {
 		panic("failed to open database: " + err.Error())
 	}
 	return db
+}
+
+// TruncateTable deletes all records in given table.
+func TruncateTable(ctx context.Context, t *testing.T, db *sql.DB, tableName string) {
+	t.Helper()
+	if _, err := db.Exec(`DELETE FROM ` + tableName); err != nil {
+		t.Fatal(err)
+	}
 }
