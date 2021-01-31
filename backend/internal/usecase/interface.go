@@ -45,5 +45,5 @@ type MoneyForwardRepository interface {
 
 // StatsRepository is a interface of StatsRepository.
 type StatsRepository interface {
-	FindAmountExpendedByMonth(ctx context.Context, year int) ([]*domain.AmountExpendedByMonth, error)
+	FindExpensesByMonthInYear(ctx context.Context, year int) ([]*domain.AmountExpendedByMonth, error)
 }

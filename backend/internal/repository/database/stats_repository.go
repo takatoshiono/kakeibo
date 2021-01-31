@@ -21,8 +21,8 @@ func NewStatsRepository(transaction *Transaction) *StatsRepository {
 	}
 }
 
-// FindAmountExpendedByMonth finds amount expended group by month for given year.
-func (repo *StatsRepository) FindAmountExpendedByMonth(ctx context.Context, year int) ([]*domain.AmountExpendedByMonth, error) {
+// FindExpensesByMonthInYear finds amount expended group by month for given year.
+func (repo *StatsRepository) FindExpensesByMonthInYear(ctx context.Context, year int) ([]*domain.AmountExpendedByMonth, error) {
 	db := repo.transaction.getDB()
 
 	const findQuery = `
@@ -66,3 +66,7 @@ GROUP BY m`
 
 	return out, nil
 }
+
+// FindExpensesByMonthInYear
+// FindExpensesByMonthAndCategoryInYear
+// FindExpensesByCategoryInYearAndMonth
