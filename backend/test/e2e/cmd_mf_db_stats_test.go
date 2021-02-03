@@ -10,7 +10,7 @@ import (
 	"github.com/takatoshiono/kakeibo/backend/internal/testutil"
 )
 
-func TestCmdMFDBStats_AmountExpendedByMonth(t *testing.T) {
+func TestCmdMFDBStats_ExpensesByMonth(t *testing.T) {
 	c := testutil.MustGetConfig()
 	opt := &mf.Option{
 		DriverName: c.TestDBDriverName,
@@ -34,7 +34,7 @@ func TestCmdMFDBStats_AmountExpendedByMonth(t *testing.T) {
 
 	// Run
 	got := testutil.CaptureStdout(t, func() {
-		cmd.SetArgs([]string{"db", "stats", "--query", "AmountExpendedByMonth", "--year", "2020"})
+		cmd.SetArgs([]string{"db", "stats", "--query", "ExpensesByMonth", "--year", "2020"})
 		if err := cmd.Execute(); err != nil {
 			t.Fatal(err)
 		}

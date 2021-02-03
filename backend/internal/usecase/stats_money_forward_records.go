@@ -33,7 +33,7 @@ func NewStatsMoneyForwardRecords(transaction Transaction, statsRepo StatsReposit
 func (u *StatsMoneyForwardRecords) Execute(ctx context.Context, queryName string, args *StatsMoneyForwardRecordsArgs) error {
 	out := [][]string{}
 	switch queryName {
-	case "AmountExpendedByMonth":
+	case "ExpensesByMonth":
 		res, err := u.statsRepo.FindExpensesByMonthInYear(ctx, args.Year)
 		if err != nil {
 			return fmt.Errorf("failed to find amount expended by month: %w", err)
