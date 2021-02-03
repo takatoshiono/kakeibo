@@ -17,39 +17,76 @@ type StatsMoneyForwardRecordsArgs struct {
 type StatsMoneyForwardRecords struct {
 	transaction Transaction
 	statsRepo   StatsRepository
+	masterRepo  MasterRepository
 	w           io.Writer
 }
 
 // NewStatsMoneyForwardRecords returns a new StatsMoneyForwardRecords usecase.
-func NewStatsMoneyForwardRecords(transaction Transaction, statsRepo StatsRepository, w io.Writer) *StatsMoneyForwardRecords {
+func NewStatsMoneyForwardRecords(transaction Transaction, statsRepo StatsRepository, masterRepo MasterRepository, w io.Writer) *StatsMoneyForwardRecords {
 	return &StatsMoneyForwardRecords{
 		transaction: transaction,
 		statsRepo:   statsRepo,
+		masterRepo:  masterRepo,
 		w:           w,
 	}
 }
 
 // Execute executes the usecase.
 func (u *StatsMoneyForwardRecords) Execute(ctx context.Context, queryName string, args *StatsMoneyForwardRecordsArgs) error {
-	out := [][]string{}
 	switch queryName {
-	case "AmountExpendedByMonth":
-		res, err := u.statsRepo.FindAmountExpendedByMonth(ctx, args.Year)
-		if err != nil {
-			return fmt.Errorf("failed to find amount expended by month: %w", err)
-		}
-		for _, r := range res {
-			out = append(out, []string{
-				strconv.Itoa(int(r.Month)),
-				strconv.Itoa(r.Amount),
-			})
-		}
-		if err := u.outputCSV(out); err != nil {
-			return fmt.Errorf("failed to output csv: %w", err)
-		}
+	case "ExpensesByMonth":
+		return u.executeExpensesByMonth(ctx, args.Year)
+	case "ExpensesByMonthAndCategory":
+		return u.executeExpensesByMonthAndCategory(ctx, args.Year)
 	default:
 		return fmt.Errorf("unknown query name '%v'", queryName)
 	}
+}
+
+func (u *StatsMoneyForwardRecords) executeExpensesByMonth(ctx context.Context, year int) error {
+	res, err := u.statsRepo.FindExpensesByMonthInYear(ctx, year)
+	if err != nil {
+		return fmt.Errorf("failed to find expenses by month: %w", err)
+	}
+
+	out := [][]string{}
+	for _, r := range res {
+		out = append(out, []string{
+			strconv.Itoa(int(r.Month)),
+			strconv.Itoa(r.Amount),
+		})
+	}
+
+	if err := u.outputCSV(out); err != nil {
+		return fmt.Errorf("failed to output csv: %w", err)
+	}
+
+	return nil
+}
+
+func (u *StatsMoneyForwardRecords) executeExpensesByMonthAndCategory(ctx context.Context, year int) error {
+	res, err := u.statsRepo.FindExpensesByMonthAndCategoryInYear(ctx, year)
+	if err != nil {
+		return fmt.Errorf("failed to find expenses by month and category: %w", err)
+	}
+
+	out := [][]string{}
+	for _, r := range res {
+		c, err := u.masterRepo.FindCategoryByID(ctx, r.CategoryID)
+		if err != nil {
+			return fmt.Errorf("failed to find category: %w", err)
+		}
+		out = append(out, []string{
+			strconv.Itoa(int(r.Month)),
+			c.Name,
+			strconv.Itoa(r.Amount),
+		})
+	}
+
+	if err := u.outputCSV(out); err != nil {
+		return fmt.Errorf("failed to output csv: %w", err)
+	}
+
 	return nil
 }
 

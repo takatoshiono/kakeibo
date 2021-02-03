@@ -126,6 +126,22 @@ SELECT id, name, display_order FROM sources WHERE name = ?`
 	return s, nil
 }
 
+// FindCategoryByID finds the category by id.
+func (repo *MasterRepository) FindCategoryByID(ctx context.Context, id string) (*domain.Category, error) {
+	db := repo.transaction.getDB()
+
+	const findQuery = `
+SELECT id, name, level, display_order, parent_id FROM categories WHERE id = ?`
+	findArgs := []interface{}{id}
+
+	c := &domain.Category{}
+	if err := db.QueryRowContext(ctx, findQuery, findArgs...).Scan(&c.ID, &c.Name, &c.Level, &c.DisplayOrder, &c.ParentID); err != nil {
+		return nil, fmt.Errorf("failed to scan: %w", err)
+	}
+
+	return c, nil
+}
+
 // FindCategoryByNameAndLevel finds the category by name and level.
 func (repo *MasterRepository) FindCategoryByNameAndLevel(ctx context.Context, name string, level domain.CategoryLevel) (*domain.Category, error) {
 	db := repo.transaction.getDB()

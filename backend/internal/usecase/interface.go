@@ -36,6 +36,7 @@ type Transaction interface {
 type MasterRepository interface {
 	FindOrCreateSource(ctx context.Context, name string) (*domain.Source, error)
 	FindOrCreateCategory(ctx context.Context, name string, level domain.CategoryLevel, parentID string) (*domain.Category, error)
+	FindCategoryByID(ctx context.Context, id string) (*domain.Category, error)
 }
 
 // MoneyForwardRepository is a interface of MoneyForwardRepository.
@@ -45,5 +46,6 @@ type MoneyForwardRepository interface {
 
 // StatsRepository is a interface of StatsRepository.
 type StatsRepository interface {
-	FindAmountExpendedByMonth(ctx context.Context, year int) ([]*domain.AmountExpendedByMonth, error)
+	FindExpensesByMonthInYear(ctx context.Context, year int) ([]*domain.AmountByYearMonth, error)
+	FindExpensesByMonthAndCategoryInYear(ctx context.Context, year int) ([]*domain.AmountByYearMonthCategory, error)
 }

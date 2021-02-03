@@ -58,8 +58,9 @@ func (o *StatsOption) Run() error {
 	defer db.Close()
 	transaction := database.NewTransaction(db)
 	statsRepo := database.NewStatsRepository(transaction)
+	masterRepo := database.NewMasterRepository(transaction)
 
-	u := usecase.NewStatsMoneyForwardRecords(transaction, statsRepo, os.Stdout)
+	u := usecase.NewStatsMoneyForwardRecords(transaction, statsRepo, masterRepo, os.Stdout)
 	args := &usecase.StatsMoneyForwardRecordsArgs{
 		Year: o.year,
 	}
