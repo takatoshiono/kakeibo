@@ -81,8 +81,8 @@ func TestCmdMFDBStats_ExpensesByMonthAndCategory(t *testing.T) {
 	})
 
 	// Confirm
-	want := `7,食費,431
-7,健康・医療,2370
+	want := `7,健康・医療,2370
+7,食費,431
 10,日用品,678
 10,食費,278
 `
