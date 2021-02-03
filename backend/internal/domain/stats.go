@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-type AmountExpendedByMonth struct {
+type AmountByYearMonth struct {
 	Year   int
 	Month  time.Month
 	Amount int

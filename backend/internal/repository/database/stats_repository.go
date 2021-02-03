@@ -21,8 +21,8 @@ func NewStatsRepository(transaction *Transaction) *StatsRepository {
 	}
 }
 
-// FindExpensesByMonthInYear finds amount expended group by month for given year.
-func (repo *StatsRepository) FindExpensesByMonthInYear(ctx context.Context, year int) ([]*domain.AmountExpendedByMonth, error) {
+// FindExpensesByMonthInYear finds expenses group by month for given year.
+func (repo *StatsRepository) FindExpensesByMonthInYear(ctx context.Context, year int) ([]*domain.AmountByYearMonth, error) {
 	db := repo.transaction.getDB()
 
 	const findQuery = `
@@ -42,7 +42,7 @@ GROUP BY m`
 	}
 	defer rows.Close()
 
-	out := []*domain.AmountExpendedByMonth{}
+	out := []*domain.AmountByYearMonth{}
 	for rows.Next() {
 		var monthStr string
 		var amount int
@@ -53,7 +53,7 @@ GROUP BY m`
 		if err != nil {
 			return nil, fmt.Errorf("failed to convert month string to int: %w", err)
 		}
-		out = append(out, &domain.AmountExpendedByMonth{
+		out = append(out, &domain.AmountByYearMonth{
 			Year:   year,
 			Month:  time.Month(month),
 			Amount: amount,
