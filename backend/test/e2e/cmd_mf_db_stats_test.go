@@ -42,6 +42,7 @@ func TestCmdMFDBStats_ExpensesByMonth(t *testing.T) {
 
 	// Confirm
 	want := `7,2801
+10,956
 `
 
 	if d := cmp.Diff(want, got); d != "" {
@@ -80,8 +81,10 @@ func TestCmdMFDBStats_ExpensesByMonthAndCategory(t *testing.T) {
 	})
 
 	// Confirm
-	want := `7,健康・医療,2370
-7,食費,431
+	want := `7,食費,431
+7,健康・医療,2370
+10,日用品,678
+10,食費,278
 `
 
 	if d := cmp.Diff(want, got); d != "" {

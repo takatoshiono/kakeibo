@@ -30,7 +30,8 @@ SELECT strftime('%m',recorded_on) m, abs(sum(amount)) a
 FROM money_forward_records
 WHERE recorded_on BETWEEN ? AND ?
 AND amount < 0
-GROUP BY m`
+GROUP BY m
+ORDER BY m`
 	findArgs := []interface{}{
 		fmt.Sprintf("%04d-01-01", year),
 		fmt.Sprintf("%04d-12-31", year),
@@ -78,7 +79,8 @@ INNER JOIN categories c1 on (m.category_id = c1.id)
 INNER JOIN categories c2 on (c1.parent_id = c2.id)
 WHERE recorded_on BETWEEN ? AND ?
 AND amount < 0
-GROUP BY m, c2.id`
+GROUP BY m, c2.id
+ORDER BY m, c2.parent_id, c2.display_order, c2.id`
 	findArgs := []interface{}{
 		fmt.Sprintf("%04d-01-01", year),
 		fmt.Sprintf("%04d-12-31", year),
