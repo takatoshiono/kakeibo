@@ -80,7 +80,7 @@ INNER JOIN categories c2 on (c1.parent_id = c2.id)
 WHERE recorded_on BETWEEN ? AND ?
 AND amount < 0
 GROUP BY m, c2.id
-ORDER BY m, c2.parent_id, c2.display_order, c2.id`
+ORDER BY m, c2.parent_id, c2.display_order, c2.name`
 	findArgs := []interface{}{
 		fmt.Sprintf("%04d-01-01", year),
 		fmt.Sprintf("%04d-12-31", year),
