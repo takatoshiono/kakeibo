@@ -4,3 +4,29 @@
 # Kakeibo
 
 Kakeibo is a tool set to manage expenses.
+
+## proto
+
+We use [Buf](https://buf.build/) for Protobuf files.
+
+### Installation
+
+Buf:
+- See [Installation](https://docs.buf.build/installation) page.
+
+protoc-gen-go:
+```
+$ go install google.golang.org/protobuf/cmd/protoc-gen-go
+```
+
+### Generation
+To generate stubs, run:
+```
+$ buf generate
+```
+
+### Lint
+To run linting:
+```
+$ buf lint
+```

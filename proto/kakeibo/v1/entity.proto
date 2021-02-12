@@ -1,0 +1,93 @@
+syntax = "proto3";
+
+package kakeibo.v1;
+
+option go_package = "github.com/takatoshiono/kakeibo/backend/gen/proto/kakeibo/v1;kakeibo";
+
+// Represents a financial institution, such as a bank name.
+message Source {
+  // The unique id of the source.
+  string id = 1;
+
+  // The name of the source.
+  string name = 2;
+
+  // The order of display.
+  int64 display_order = 3;
+}
+
+// Represents a category of records.
+message Category {
+  // The unique id of the category.
+  string id = 1;
+
+  // The name of the category.
+  string name = 2;
+
+  // The hierarchy level of the category.
+  int64 level = 3;
+
+  // The order of display.
+  int64 display_order = 4;
+
+  // The parent category id of the category.
+  // Empty if it is a top.
+  string parent_category_id = 5;
+}
+
+// Represents a record of a expense or a income.
+message MoneyForwardRecord {
+  // The unique id of the record.
+  string id = 1;
+
+  // The date it had recorded in RFC3339 full-date format.
+  string recorded_date = 2;
+
+  // The title of the record.
+  string title = 3;
+
+  // The amount of the record.
+  // Negative for expenses, positive for incomes.
+  int64 amount = 4;
+
+  // The source id of the record.
+  string source_id = 5;
+
+  // The category id of the record.
+  string category_id = 6;
+
+  // The memo of the record.
+  string memo = 7;
+}
+
+// Represents a two-dimensional table of values.
+// This is the message that based on Google Charts.
+message DataTable {
+  repeated Column columns = 1;
+  repeated Row rows = 2;
+
+  message Column {
+    string label = 1;
+  }
+
+  message Row {
+    repeated Cell cells = 1;
+  }
+
+  message Cell {
+    Value value = 1;
+
+    message Value {
+      oneof value_type {
+        string string_value = 1;
+        int64 integer_value = 2;
+      }
+    }
+  }
+}
+
+// Represents a chart.
+message Chart {
+  string title = 1;
+  DataTable data = 2;
+}
