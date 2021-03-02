@@ -85,9 +85,3 @@ message DataTable {
     }
   }
 }
-
-// Represents a chart.
-message Chart {
-  string title = 1;
-  DataTable data = 2;
-}
