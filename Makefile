@@ -17,6 +17,8 @@ export PATH := $(abspath $(CACHE_BIN)):$(PATH)
 
 .PHONY: install-buf
 install-buf:
+	@rm -f $(CACHE_BIN)/buf
+	@mkdir -p $(CACHE_BIN)
 	curl -sSL "https://github.com/bufbuild/buf/releases/download/v$(BUF_VERSION)/buf-$(UNAME_OS)-$(UNAME_ARCH)" -o "$(CACHE_BIN)/buf"
 	chmod +x "$(CACHE_BIN)/buf"
 
