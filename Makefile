@@ -24,7 +24,7 @@ install-buf:
 
 # proto
 
-.PHONY: proto-gen-go
+.PHONY: proto
 proto:
 	buf generate
 
