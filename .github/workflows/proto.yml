@@ -16,9 +16,11 @@ jobs:
       - name: Install Buf
         run: |
           make install-buf
+      - name: Install protoc-gen-go
+        run: |
+          go install google.golang.org/protobuf/cmd/protoc-gen-go
       - name: proto
         run: |
-          go mod download
           make proto
       - name: lint
         run: |
