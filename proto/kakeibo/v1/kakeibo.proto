@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package kakeibo.v1;
 
-import "proto/kakeibo/v1/entity.proto";
+import "kakeibo/v1/entity.proto";
 
 option go_package = "github.com/takatoshiono/kakeibo/backend/gen/proto/kakeibo/v1;kakeibo";
 
