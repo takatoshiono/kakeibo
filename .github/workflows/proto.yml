@@ -18,6 +18,7 @@ jobs:
           make install-buf
       - name: proto
         run: |
+          go mod download
           make proto
       - name: lint
         run: |
