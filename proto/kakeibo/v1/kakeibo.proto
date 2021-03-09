@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package kakeibo.v1;
+
+import "kakeibo/v1/entity.proto";
+
+option go_package = "github.com/takatoshiono/kakeibo/backend/gen/proto/kakeibo/v1;kakeibo";
+
+service KakeiboService {
+  // Get a statistics data.
+  rpc GetStatsData(GetStatsDataRequest) returns (GetStatsDataResponse);
+
+  // List all sources.
+  rpc ListSources(ListSourcesRequest) returns (ListSourcesResponse);
+
+  // List all categories in given parent category.
+  rpc ListCategories(ListCategoriesRequest) returns (ListCategoriesResponse);
+
+  // List all money forward record in given request.
+  rpc ListMoneyForwardRecords(ListMoneyForwardRecordsRequest) returns (ListMoneyForwardRecordsResponse);
+}
+
+// The request for GetStatsData.
+message GetStatsDataRequest {
+  // The query name for the statistics.
+  string query_name = 1;
+}
+
+// The response of GetStatsData.
+message GetStatsDataResponse {
+  // The data table of statistics.
+  DataTable data = 1;
+}
+
+// The request for ListSources.
+message ListSourcesRequest {}
+
+// The response for ListSources.
+message ListSourcesResponse {
+  // The list of source.
+  repeated Source sources = 1;
+}
+
+// The request for ListCategories.
+message ListCategoriesRequest {
+  // The parent category id. Return top level categories if empty.
+  string parent_id = 1;
+}
+
+// The response for ListCategories.
+message ListCategoriesResponse {
+  // The list of category.
+  repeated Category categories = 1;
+}
+
+// The request for ListMoneyForwardRecords.
+message ListMoneyForwardRecordsRequest {
+  // Required. Year of date. Must be from 1 to 9999.
+  int32 year = 1;
+
+  // Required. Month of year. Must be from 1 to 12.
+  int32 month = 2;
+
+  // Optional. Day of month. Must be from 1 to 31 and valid for the year and month.
+  int32 day = 3;
+
+  // Optional. The requested category id.
+  string category_id = 4;
+}
+
+// The response for ListMoneyForwardRecords.
+message ListMoneyForwardRecordsResponse {
+  // The list of money forward record.
+  repeated MoneyForwardRecord records = 1;
+}
