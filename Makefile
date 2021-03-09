@@ -33,7 +33,7 @@ proto:
 .PHONY: lint
 lint:
 	buf lint
-	buf breaking --against '.git#branch=master'
+	buf breaking --against '.git#branch=main'
 
 # clean deletes the cache for all platforms.
 
