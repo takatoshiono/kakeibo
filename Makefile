@@ -22,17 +22,23 @@ install-buf:
 	curl -sSL "https://github.com/bufbuild/buf/releases/download/v$(BUF_VERSION)/buf-$(UNAME_OS)-$(UNAME_ARCH)" -o "$(CACHE_BIN)/buf"
 	chmod +x "$(CACHE_BIN)/buf"
 
-# proto
+# proto-stubs
 
-.PHONY: proto
-proto:
+.PHONY: proto-stubs
+proto-stubs:
 	buf generate
 
-# lint
+# proto-lint
 
-.PHONY: lint
-lint:
+.PHONY: proto-lint
+proto-lint:
 	buf lint
+
+# proto-breaking
+
+.PHONE: proto-breaking
+proto-breaking:
+	buf breaking --against .git#tag=main
 
 # clean deletes the cache for all platforms.
 
