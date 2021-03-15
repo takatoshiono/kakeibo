@@ -2,6 +2,15 @@ SHELL := /usr/bin/env bash -o pipefail
 
 PROJECT := kakeibo
 
+# This controls the remote HTTPS git location to compare against for breaking changes in CI.
+#
+# Most CI providers only clone the branch under test and to a certain depth, so when
+# running buf breaking in CI, it is generally preferable to compare against
+# the remote repository directly.
+#
+# Basic authentication is available, see https://buf.build/docs/inputs#https for more details.
+HTTPS_GIT := https://github.com/takatoshiono/kakeibo.git
+
 BUF_VERSION := 0.38.0
 UNAME_OS := $(shell uname -s)
 UNAME_ARCH := $(shell uname -m)
@@ -34,11 +43,19 @@ proto-stubs:
 proto-lint:
 	buf lint
 
-# proto-breaking
+# proto-breaking is for local
+# This does breaking change detection against our local git repository.
 
 .PHONE: proto-breaking
 proto-breaking:
-	buf breaking --against .git#tag=main
+	buf breaking --against '.git#branch=main'
+
+# proto-breaking-ci is for CI
+# This does breaking change detection against our remote HTTPS git repository.
+
+.PHONE: proto-breaking-ci
+proto-breaking-ci:
+	buf breaking --against "$(HTTPS_GIT)#branch=main"
 
 # clean deletes the cache for all platforms.
 

@@ -9,12 +9,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        with:
-          ref: main 
-      - name: Checkout main branch
-        run: git checkout main
-      - name: Checkout code
-        uses: actions/checkout@v2
       - name: Setup Go environment
         uses: actions/setup-go@v2
         with:
@@ -34,4 +28,4 @@ jobs:
           make proto-lint
       - name: Run breaking change detection
         run: |
-          make proto-breaking
+          make proto-breaking-ci
