@@ -57,8 +57,18 @@ proto-breaking:
 proto-breaking-ci:
 	buf breaking --against "$(HTTPS_GIT)#branch=main"
 
+.PHONY: test-backend
+test-backend:
+	go test -race -v -coverprofile ./backend/coverage.out ./backend/...
+
+.PHONY: build
+build-backend:
+	mkdir -p build
+	go build -o ./backend/build ./backend/cmd/mf
+
 # clean deletes the cache for all platforms.
 
 .PHONY: clean
 clean:
 	rm -rf $(CACHE_BASE)
+	rm -rf backend/build
