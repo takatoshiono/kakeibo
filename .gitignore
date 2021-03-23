@@ -1,0 +1,5 @@
+/.env
+/.vscode/
+/backend/build
+/backend/coverage.out
+/backend/db/*.sqlite3
